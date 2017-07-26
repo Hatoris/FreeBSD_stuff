@@ -1,44 +1,44 @@
 #!/bin/sh
 #
-# PROVIDE: plexpy
-# REQUIRE: DAEMON plexpy
+# PROVIDE: ombi
+# REQUIRE: DAEMON ombi
 # KEYWORD: shutdown
 #
 # Add the following lines to /etc/rc.conf.local or /etc/rc.conf
 # to enable this service:
 #
-# plexpy_enable (bool): Set to NO by default.
+# ombi_enable (bool): Set to NO by default.
 #           Set it to YES to enable it.
-# plexpy_user:  The user account PlexPy daemon runs as what
+# ombi_user:  The user account PlexPy daemon runs as what
 #           you want it to be. It uses 'plexpy' user by
 #           default. Do not sets it as empty or it will run
 #           as root.
-# plexpy_dir:   Directory where PlexPy lives.
+# ombi_dir:   Directory where PlexPy lives.
 #           Default: /usr/local/share/plexpy
-# plexpy_chdir:  Change to this directory before running PlexPy.
+# ombi_chdir:  Change to this directory before running PlexPy.
 #     Default is same as plexpy_dir.
-# plexpy_pid:  The name of the pidfile to create.
+# ombi_pid:  The name of the pidfile to create.
 #     Default is plexpy.pid in plexpy_dir.
 PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
 
 . /etc/rc.subr
 
-name="plexpy"
+name="ombi"
 rcvar=${name}_enable
 
 load_rc_config ${name}
 
-: ${plexpy_enable:="NO"}
-: ${plexpy_user:="plexpy"}
-: ${plexpy_dir:="/usr/local/share/plexpy"}
-: ${plexpy_chdir:="${plexpy_dir}"}
-: ${plexpy_pid:="${plexpy_dir}/plexpy.pid"}
-: ${plexpy_flags:=""}
+: ${ombi_enable:="NO"}
+: ${ombi_user:="plex"}
+: ${ombi_dir:="/usr/ombi"}
+: ${ombi_chdir:="${ombi_dir}"}
+: ${ombi_pid:="${ombi_dir}/ombi.pid"}
+: ${ombi_flags:=""}
 
 status_cmd="${name}_status"
 stop_cmd="${name}_stop"
 
-command="${plexpy_dir}/PlexPy.py"
+command="${ombi_dir}/PlexPy.py"
 command_args="--daemon --pidfile ${plexpy_pid} --quiet --nolaunch ${plexpy_flags}"
 
 # Ensure user is root when running this script.
