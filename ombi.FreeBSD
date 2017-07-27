@@ -38,7 +38,11 @@ load_rc_config ${name}
 status_cmd="${name}_status"
 stop_cmd="${name}_stop"
 
-command="cd -- ${ombi_dir} && mono Ombi.exe"
+command="cd"
+command_args="${ombi_dir}"
+command="/usr/local/bin/mono"
+command_args="Ombi.exe"
+
 
 
 # Ensure user is root when running this script.
@@ -70,7 +74,7 @@ ombi_stop() {
 }
 
 ombi_status() {
-    verify_plexpy_pid
+    verify_ombi_pid
     if [ -n "${pid}" ]; then
       echo "$name is running as ${pid}."
     else
