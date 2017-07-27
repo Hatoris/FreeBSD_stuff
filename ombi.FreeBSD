@@ -38,8 +38,8 @@ load_rc_config ${name}
 status_cmd="${name}_status"
 stop_cmd="${name}_stop"
 
-command="${ombi_dir}/PlexPy.py"
-command_args="--daemon --pidfile ${plexpy_pid} --quiet --nolaunch ${plexpy_flags}"
+command="cd -- ${ombi_dir} && mono Ombi.exe"
+
 
 # Ensure user is root when running this script.
 if [ `id -u` != "0" ]; then
@@ -47,11 +47,11 @@ if [ `id -u` != "0" ]; then
   exit 1
 fi
 
-verify_plexpy_pid() {
+verify_ombi_pid() {
     # Make sure the pid corresponds to the PlexPy process.
-    if [ -f ${plexpy_pid} ]; then
-      pid=`cat ${plexpy_pid} 2>/dev/null`
-      ps -p ${pid} | grep -q "python2 ${plexpy_dir}/PlexPy.py"
+    if [ -f ${ombi_pid} ]; then
+      pid=`cat ${ombi_pid} 2>/dev/null`
+      ps -p ${pid} | grep -q "${ombi_dir}"
       return $?
     else
       return 0
@@ -59,9 +59,9 @@ verify_plexpy_pid() {
 }
 
 # Try to stop PlexPy cleanly by sending SIGTERM
-plexpy_stop() {
+ombi_stop() {
     echo "Stopping $name"
-    verify_plexpy_pid
+    verify_ombi_pid
     if [ -n "${pid}" ]; then
       kill ${pid}
       wait_for_pids ${pid}
@@ -69,7 +69,7 @@ plexpy_stop() {
     fi
 }
 
-plexpy_status() {
+ombi_status() {
     verify_plexpy_pid
     if [ -n "${pid}" ]; then
       echo "$name is running as ${pid}."
